@@ -35,6 +35,7 @@ resource "azurerm_function_app" "func" {
   app_service_plan_id        = module.azurerm_app_service_plan.id
   storage_account_name       = module.azurerm_storage_account.name
   storage_account_access_key = module.azurerm_storage_account.primary_access_key
+  https_only                 = true
 
   tags = var.tags
 

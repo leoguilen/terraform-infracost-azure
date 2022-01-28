@@ -1,0 +1,13 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  init-terraform-modules:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Initialize terraform providers and modules
+      - run: echo "Init terraform provider and modules at $(date)"
