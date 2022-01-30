@@ -32,7 +32,3 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -var-file=./environments/dev/dev.tfvars -auto-approve
-      
-    environment:
-      name: development
-      url: tf output -raw function_app_default_hostname
