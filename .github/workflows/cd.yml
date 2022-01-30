@@ -1,12 +1,12 @@
 name: Terraform CD
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [closed]
 
 jobs:
   apply-terraform:
-    if: github.event.review.state == 'approved'
+    if: github.event.pull_request.merged == true
     name: 'Apply terraform infra'
     runs-on: ubuntu-latest
     environment: development
