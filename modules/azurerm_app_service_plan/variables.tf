@@ -26,8 +26,8 @@ variable "sku" {
     size = string
   })
   default = {
-    tier = "Standard"
-    size = "S1"
+    tier = "Dynamic"
+    size = "Y1"
   }
 }
 
