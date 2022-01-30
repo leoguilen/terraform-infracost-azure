@@ -5,7 +5,35 @@ on:
     branches: [ main ]
 
 jobs:
+  setup-azure-storage:
+    name: 'Setup azure storage account for tfstate files'
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      TF_BACKEND_CONFIG_CONTAINER_NAME: ${{ secrets.TF_BACKEND_CONFIG_CONTAINER_NAME }}
+      TF_BACKEND_CONFIG_RG_NAME: ${{ secrets.TF_BACKEND_CONFIG_RG_NAME }}
+      TF_BACKEND_CONFIG_SA_NAME: ${{ secrets.TF_BACKEND_CONFIG_SA_NAME }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Run setup script
+      run: |
+        sudo apt-get update -qq && sudo apt-get -qq install jq
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        jq -h
+        az version
+        az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+        chmod +x tfstate_storage_azure.sh
+        ./tfstate_storage_azure.sh
+
   init-and-validate-terraform:
+    needs: setup-azure-storage
     name: 'Initialize and validate terraform providers and modules'
     runs-on: ubuntu-latest
 
@@ -47,7 +75,7 @@ jobs:
       run: tflint --var-file=./environments/dev/dev.tfvars -f compact
 
   terraform-security-analysis:
-    needs: init-and-validate-terraform
+    needs: setup-azure-storage
     name: 'Run security analysis for terraform'
     runs-on: ubuntu-latest
 
@@ -67,7 +95,7 @@ jobs:
         sarif_file: tfsec.sarif
 
   infracost-report:
-    needs: [terraform-security-analysis]
+    needs: setup-azure-storage
     name: 'Generate infra cost report'
     runs-on: ubuntu-latest
 
