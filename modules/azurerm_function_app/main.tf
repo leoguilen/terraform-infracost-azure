@@ -7,7 +7,7 @@ module "azurerm_storage_account" {
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = "LRS"
 
   tags = var.tags
 }
@@ -21,8 +21,8 @@ module "azurerm_app_service_plan" {
   kind                = "FunctionApp"
 
   sku = {
-    tier = "Standard"
-    size = "S1"
+    tier = "Dynamic"
+    size = "Y1"
   }
 
   tags = var.tags
