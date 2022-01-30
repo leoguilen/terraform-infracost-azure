@@ -3,7 +3,7 @@ module "azurerm_resource_group" {
 
   name     = var.rg_name
   location = var.location
-  tags     = {}
+  tags     = var.default_tags
   locking = {
     enabled    = false,
     lock_level = ""
@@ -18,5 +18,5 @@ module "azurerm_function_app" {
   resource_group_name   = module.azurerm_resource_group.name
   app_service_plan_name = var.plan_name
   storage_account_name  = var.sa_name
-  tags                  = {}
+  tags                  = var.default_tags
 }

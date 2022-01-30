@@ -6,6 +6,12 @@ variable "location" {
   type        = string
 }
 
+variable "default_tags" {
+  description = "Defines the tags to set for all resources"
+  type        = any
+  default     = {}
+}
+
 # ------------------------- #
 # RESOURCE GROUP VARIABLES  #
 # ------------------------- #

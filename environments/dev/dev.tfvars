@@ -12,3 +12,9 @@ rg_name = "tfresourcegroupdev"
 
 # The backend storage account name which will be used by this Function App
 sa_name = "tfbackstorageaccountdev"
+
+# Defines the tags to set for all resources
+default_tags = {
+  environment = "development"
+  created_by  = "terraform ci/cd pipeline"
+}
