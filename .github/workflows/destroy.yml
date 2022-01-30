@@ -22,7 +22,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -backend-config="resource_group_name=${{ secrets.TF_BACKEND_CONFIG_RG_NAME }}" -backend-config="storage_account_name=${{ secrets.TF_BACKEND_CONFIG_SA_NAME }}" -backend-config="container_name=${{ secrets.TF_BACKEND_CONFIG_CONTAINER_NAME }}" -backend-config="key=${{ secrets.TF_BACKEND_CONFIG_FILE_KEY }}"
     
     - name: Terraform Plan
       run: terraform plan -var-file=./environments/dev/dev.tfvars
